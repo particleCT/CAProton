@@ -48,15 +48,9 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-<<<<<<< 5d810cb2e5af864cb7d4e9692fa95da94c06b7d6
-  /*G4String particleName = "proton";
-  G4ParticleDefinition* particle = particleTable->FindParticle(particleName);*/
-  G4ParticleDefinition* particle = G4IonTable::GetIonTable()->GetIon(Z,A,0);
-=======
   G4String particleName = "proton";
   //G4ParticleDefinition* particle = G4IonTable::GetIonTable()->GetIon(6,12,0);
   G4ParticleDefinition* particle = particleTable->FindParticle(particleName);
->>>>>>> Correction in the detector placement
   particleGun->SetParticleDefinition(particle);
   Einit = ENER*MeV;
   
