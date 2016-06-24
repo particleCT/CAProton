@@ -28,7 +28,7 @@ void ParallelWorldConstruction::Construct() {
   //Radiographic detector
   G4double HalfY  = theDetector->NbinsY*theDetector->halfY;
   G4double HalfZ  = theDetector->NbinsZ*theDetector->halfZ;
-  G4double thickZ = 0.01*mm;
+  G4double thickZ = 0.1*mm;
   G4VisAttributes* sd_att = new G4VisAttributes(G4Colour(0,1,1));
   
   SensitiveDetector* sd1               = new SensitiveDetector("sd1");

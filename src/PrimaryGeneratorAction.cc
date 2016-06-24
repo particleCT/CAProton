@@ -10,6 +10,7 @@
 #include "globals.hh"
 #include "Randomize.hh"
 #include "G4ios.hh"
+#include "G4Proton.hh"
 #include "G4IonTable.hh"
 #include <math.h>
 #include "G4NavigationHistory.hh"
@@ -48,9 +49,10 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-  G4String particleName = "proton";
-  //G4ParticleDefinition* particle = G4IonTable::GetIonTable()->GetIon(6,12,0);
-  G4ParticleDefinition* particle = particleTable->FindParticle(particleName);
+  //G4String particleName = "proton";
+  G4ParticleDefinition* particle = G4IonTable::GetIonTable()->GetIon(2,4,0);
+  //G4ParticleDefinition* particle = particleTable->FindParticle(particleName);
+  //G4ParticleDefinition* particle = G4Proton::ProtonDefinition();
   particleGun->SetParticleDefinition(particle);
   Einit = ENER*MeV;
   

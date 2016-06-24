@@ -64,9 +64,9 @@ HadrontherapyPhysicsList::HadrontherapyPhysicsList(G4String& parWorldName):G4VMo
   // Deacy physics and all particles
   decPhysicsList = new G4DecayPhysics();
   AddPhysicsList("emphysics_pct");
-  AddPhysicsList("elastic");
-  AddPhysicsList("binary");
-  AddPhysicsList("qmd_ion_ion_inelastic");
+  //AddPhysicsList("elastic");
+  //AddPhysicsList("binary");
+  //AddPhysicsList("qmd_ion_ion_inelastic");
 
 }
 

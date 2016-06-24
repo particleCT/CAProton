@@ -18,7 +18,7 @@ SteppingAction::~SteppingAction()
 SteppingAction::SteppingAction()
 {
   theSteppingAction=this;
-  Einit = 330.0;
+ // Einit = 330.0;
 }
 
 
@@ -36,13 +36,13 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   }
   if(tr->GetTrackID()==1){
   G4ThreeVector preStepPos = aStep->GetPreStepPoint()->GetPosition();                                                                                                               
-  G4double en  = aStep->GetTotalEnergyDeposit();
+  G4double en  = aStep->GetTotalEnergyDeposit()-aStep->GetNonIonizingEnergyDeposit();
   Eloss.push_back(en);
-  Einit-=en;
-  cout<<"Pre  "<<aStep->GetPreStepPoint()->GetKineticEnergy()<<endl;
-  cout<<"Post "<<aStep->GetPostStepPoint()->GetKineticEnergy()<<endl;
-  cout<<"Energy deposity "<<en<<endl;
-  cout<<Einit<<endl;
+  // Einit-=en;
+  //cout<<"Pre  "<<aStep->GetPreStepPoint()->GetKineticEnergy()<<endl;
+  //cout<<"Post "<<aStep->GetPostStepPoint()->GetKineticEnergy()<<endl;
+  //cout<<"Energy deposity "<<en<<endl;
+  //cout<<Einit<<endl;
   temp_X.push_back(preStepPos.x());
   temp_Y.push_back(preStepPos.y());
   temp_Z.push_back(preStepPos.z());
