@@ -29,7 +29,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(G4double energy):ENER(energy)
   theGenerator = this;
   theDetector = DetectorConstruction::GetInstance();
 
-  particleGun = new G4ParticleGun(1);
+  particleGun = new G4ParticleGun();
   nProtonsGenerated = 0;
   IrradiatedEnergy  = 0.;
 
@@ -48,11 +48,7 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-  G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-  //G4String particleName = "proton";
-  G4ParticleDefinition* particle = G4IonTable::GetIonTable()->GetIon(2,4,0);
-  //G4ParticleDefinition* particle = particleTable->FindParticle(particleName);
-  //G4ParticleDefinition* particle = G4Proton::ProtonDefinition();
+  particle = G4IonTable::GetIonTable()->GetIon(2,4,0);
   particleGun->SetParticleDefinition(particle);
   Einit = ENER*MeV;
   
@@ -63,7 +59,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   py0 = 0;//sinTheta*std::sin(phi);
   pz0 = 0;//cosTheta;
 
-  x0 = theDetector->Xmin - 0.02*mm;
+  x0 = theDetector->Xmin - 0.5*mm;
   y0 = G4UniformRand()*fieldSizeY-fieldSizeY/2 + theDetector->shift.y();     
   z0 = G4UniformRand()*fieldSizeZ-fieldSizeZ/2 + theDetector->shift.z();
 

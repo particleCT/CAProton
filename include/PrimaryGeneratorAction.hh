@@ -1,6 +1,7 @@
 #ifndef PrimaryGeneratorAction_h
 #define PrimaryGeneratorAction_h 1
 
+#include "G4ParticleDefinition.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "globals.hh"
 #include "G4ios.hh"
@@ -33,7 +34,8 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
   G4ThreeVector Momentum;
   G4int nProtonsGenerated;   
   G4double IrradiatedEnergy; 
-  
+  G4ParticleDefinition* particle;
+
   vector<G4double> beamPosZ;
   vector<G4double> beamPosY;
   private:

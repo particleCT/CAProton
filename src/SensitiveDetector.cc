@@ -10,14 +10,13 @@ SensitiveDetector::SensitiveDetector(G4String name):G4VSensitiveDetector(name),t
 G4bool SensitiveDetector::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 {
 
-  if ( aStep->GetPreStepPoint()->GetStepStatus() == fGeomBoundary && aStep->GetTrack()->GetTrackID()==1 && theName=="sd1") {
+  if ( aStep->GetPostStepPoint()->GetStepStatus() == fGeomBoundary && aStep->GetTrack()->GetTrackID()==1 && theName=="sd1") {
     theAnalysis->analyseHit(aStep, theName);
   }
-  if ( aStep->GetPostStepPoint()->GetStepStatus() == fGeomBoundary && aStep->GetTrack()->GetTrackID()==1 && theName=="sd2"){
+  if ( aStep->GetPreStepPoint()->GetStepStatus() == fGeomBoundary && aStep->GetTrack()->GetTrackID()==1 && theName=="sd2"){
     theAnalysis->analyseHit(aStep, theName);
     aStep->GetTrack()->SetTrackStatus(fStopAndKill);
   }
-      
-  
+        
   return true;
 }

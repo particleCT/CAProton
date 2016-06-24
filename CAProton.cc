@@ -30,7 +30,7 @@
 using namespace std;
 
 
-G4double calcRSP(DetectorConstruction* myDC);
+void calcRSP(DetectorConstruction*, PrimaryGeneratorAction *);
 
 
 int main(int argc,char** argv) {
@@ -53,15 +53,15 @@ int main(int argc,char** argv) {
   runManager->SetUserInitialization(new HadrontherapyPhysicsList(paraWorldName));
   DetectorConstruction* myDC = new DetectorConstruction(phantom,angle);
   myDC->RegisterParallelWorld( new ParallelWorldConstruction(paraWorldName));
-  runManager->SetUserAction( new PrimaryGeneratorAction(energy));
+  PrimaryGeneratorAction* theGenerator = new PrimaryGeneratorAction(energy);
+  runManager->SetUserAction( theGenerator );
   Analysis* theAnalysis    = new Analysis(thread,name);
   runManager->SetUserAction( new SteppingAction() );
   runManager->SetUserAction( new EventAction() );
   runManager->SetUserInitialization( myDC );
   runManager->Initialize();
-
-  G4UImanager * UImanager = G4UImanager::GetUIpointer();
-  //UImanager->ApplyCommand("/process/eLoss/CSDARange true");
+  
+  //G4UImanager * UImanager = G4UImanager::GetUIpointer();
   //UImanager->ApplyCommand("/process/eLoss/fluct false");
   //UImanager->ApplyCommand("/run/verbose 1");
   //UImanager->ApplyCommand("/event/verbose 1");
@@ -79,16 +79,15 @@ int main(int argc,char** argv) {
 #endif
   runManager->BeamOn( nProtons );
   theAnalysis->Save();
-  //calcRSP(myDC);
+  calcRSP(myDC,theGenerator);
   
   delete runManager;
   delete Analysis::GetInstance();
   return 0;
   }
 
-G4double calcRSP(DetectorConstruction* myDC){
-  G4ParticleDefinition* particle = G4IonTable::GetIonTable()->GetIon(2,4,0);
-  //G4ParticleDefinition* particle = G4Proton::Definition();
+void calcRSP(DetectorConstruction* myDC, PrimaryGeneratorAction* theGenerator){
+  G4ParticleDefinition* particle = theGenerator->particle;
   G4EmCalculator* emCal = new G4EmCalculator;
 
   ofstream myfile;
@@ -97,33 +96,20 @@ G4double calcRSP(DetectorConstruction* myDC){
     G4int HU = myDC->huList[i];
     G4int I = 0;
     G4double tot =0;
-    for(int j=12000;j<18000;j++){
-      G4double dedx_w = emCal->ComputeElectronicDEDX( double(j)/10*MeV,particle,myDC->water);
+    G4Material* water = myDC->theMaterialList.at(0);
+    cout<<water->GetName()<<endl;
+    for(int j=10;j<19000;j++){
+      G4double dedx_w = emCal->ComputeElectronicDEDX( double(j)/10*MeV,particle,water);
       G4double dedx_b = emCal->ComputeElectronicDEDX( double(j)/10*MeV,particle,myDC->theMaterialList.at(i));
       tot +=dedx_b/dedx_w;
+      
+      cout<<double(j)/10*MeV<<" "<<dedx_w<<endl;
       I+=1;
     }
     G4double RSP = tot/I;
     myfile<<HU<<" "<<myDC->theMaterialList.at(i)->GetDensity()/(g/cm3)<<" "<<RSP<<" "<<myDC->theMaterialList.at(i)->GetName()<<endl;
   }
   myfile.close();
-
-  ofstream myfile1;
-
-  myfile1.open ("WaterTank.dat");
-
-  for(int j=0;j<19000;j++){
-  G4double dedx_SP = emCal->ComputeElectronicDEDX( float(j/10.0)*MeV,particle,myDC->water);
-  //  G4double dedx_SP1 = emCal->ComputeElectronicDEDX( float(j/100.0)*MeV,particle,myDC->theMaterialList.at(myWater));
-  //  myfile1<< float(j/100.0)*MeV<<" "<<dedx_SP*10.0<<" "<<dedx_SP1*10.0<<endl;
-  myfile1<< float(j/10.0)*MeV<<" "<<dedx_SP*10.0<<endl;
-  
-  }
-
-  //G4cout<<myDC->water<<G4endl;
-  myfile1.close();
-
-  return 0;
 
 }
 

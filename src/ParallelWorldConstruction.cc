@@ -28,7 +28,7 @@ void ParallelWorldConstruction::Construct() {
   //Radiographic detector
   G4double HalfY  = theDetector->NbinsY*theDetector->halfY;
   G4double HalfZ  = theDetector->NbinsZ*theDetector->halfZ;
-  G4double thickZ = 0.1*mm;
+  G4double thickZ = 1*mm;
   G4VisAttributes* sd_att = new G4VisAttributes(G4Colour(0,1,1));
   
   SensitiveDetector* sd1               = new SensitiveDetector("sd1");
@@ -37,8 +37,8 @@ void ParallelWorldConstruction::Construct() {
   sd_att->SetVisibility(true);
   rad_log1->SetVisAttributes(sd_att);
   rad_log1->SetSensitiveDetector(sd1);
-  G4ThreeVector PosMin  = G4ThreeVector(theDetector->Xmin + thickZ/2.,theDetector->shift.y(),theDetector->shift.z()) ; // the detectors need to be inside the voxelized geometry (but invisible) so the
-  new G4PVPlacement(0, PosMin ,"rad_phys1",rad_log1,ghostWorld,false,0);                                               // tracks record the right material
+  G4ThreeVector PosMin  = G4ThreeVector(theDetector->Xmin - thickZ/2.,theDetector->shift.y(),theDetector->shift.z()) ; 
+  new G4PVPlacement(0, PosMin ,"rad_phys1",rad_log1,ghostWorld,false,0);                                               
 
 
   SensitiveDetector* sd2               = new SensitiveDetector("sd2");
@@ -46,7 +46,7 @@ void ParallelWorldConstruction::Construct() {
   G4LogicalVolume * rad_log2           = new G4LogicalVolume(rad_vol2,0,"rad_log2",0,0,0); // No material in the detectors  
   rad_log2->SetVisAttributes(sd_att);
   rad_log2->SetSensitiveDetector(sd2);
-  G4ThreeVector PosMax  = G4ThreeVector(theDetector->Xmax - thickZ/2.,theDetector->shift.y(),theDetector->shift.z()) ;
+  G4ThreeVector PosMax  = G4ThreeVector(theDetector->Xmax + thickZ/2.,theDetector->shift.y(),theDetector->shift.z()) ;
   new G4PVPlacement(0,PosMax,"rad_phys2",rad_log2,ghostWorld,false,0);
 
 }

@@ -35,10 +35,6 @@ OrganicMaterial::OrganicMaterial(){
   elFe = man->FindOrBuildElement(26);
   elZn = man->FindOrBuildElement(30);
   elBa = man->FindOrBuildElement(56);
-  water = new G4Material("Water",1.0*g/cm3,nel=2);   // 1.0*g/cm3                                                                      
-  water->AddElement(elH,11.20*perCent);
-  water->AddElement(elO,88.80*perCent);
-  //water->GetIonisation()->SetMeanExcitationEnergy(75.0*eV);
 }
 
 OrganicMaterial::~OrganicMaterial(){ theMaterial = NULL; }
@@ -524,7 +520,7 @@ G4Material* OrganicMaterial::ConstructMaterial(G4String Name,G4double density)
 }
 
 ////////////////////////////////////////////////////////////////////////
-
+/*
 G4double OrganicMaterial::ConvertToMassDensity(std::map<G4Element*, G4double> elementVector, G4double density){
   G4double Ng = 0;
   for(auto itr=elementVector.begin(); itr!=elementVector.end(); itr++){
@@ -537,7 +533,7 @@ G4double OrganicMaterial::ConvertToMassDensity(std::map<G4Element*, G4double> el
   G4double massdensity = (density*water->GetElectronDensity()*1000)/Ng; // mg to g
   return massdensity;
 }                 
-
+*/
 ////////////////////////////////////////////////////////////////////////
 
 G4Material* OrganicMaterial::ConstructCompositeMaterial(G4String Name1,G4String Name2, G4double density, G4double ratio)

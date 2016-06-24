@@ -261,9 +261,9 @@ void EmPhysics_pCT::ConstructProcess()
       G4hMultipleScattering* msc = new G4hMultipleScattering();
       //ionIoni->SetStepFunction(0.1, 1*um);
 
-      ph->RegisterProcess(msc, particle);
+      //ph->RegisterProcess(msc, particle);
       ph->RegisterProcess(ionIoni, particle);
-      ph->RegisterProcess(ionnuc, particle);
+      //ph->RegisterProcess(ionnuc, particle);
 
     } /*else if (particleName == "pi+" ||
                particleName == "pi-" ) {

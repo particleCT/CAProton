@@ -28,7 +28,7 @@ Analysis::Analysis(G4int thread, G4String theName){
 
   theGenerator = PrimaryGeneratorAction::GetInstance();
   theDetector  = DetectorConstruction::GetInstance();
-  f1 = new TFile(Form("../../Helium/CA%s_%.0f_%.0f_%d.root",theName.data(),theGenerator->ENER,theDetector->theAngle,thread),"recreate");
+  f1 = new TFile(Form("%s_%.0f_%.0f_%d.root",theName.data(),theGenerator->ENER,theDetector->theAngle,thread),"recreate");
 
   t = new TTree("phase","PS");
 
@@ -46,7 +46,6 @@ Analysis::Analysis(G4int thread, G4String theName){
   t->Branch("tracks_Z",&tracks_Z);
   t->Branch("mat_name",&mat_name);
   t->Branch("Eloss",&Eloss);
-  /*t->Branch("Length",&Length);*/
 
   t->Branch("x1",&x1,"x1/D");
   t->Branch("y1",&y1,"y1/D");
@@ -66,45 +65,48 @@ void Analysis::analyseHit(G4Step* aStep, G4String theName)
   
   theSteppingAction = SteppingAction::GetInstance();
   f1->cd();
-  G4ParticleDefinition* particle = G4IonTable::GetIonTable()->GetIon(2,4,0);
+  G4ParticleDefinition* particle = theGenerator->particle;//G4IonTable::GetIonTable()->GetIon(2,4,0);
   G4Material* water = DetectorConstruction::GetInstance()->theMaterialList[0];
   G4EmCalculator emCal;
+  G4double Range1, Range2;
   if(theName=="sd1"){
-    x0  = aStep->GetPreStepPoint()->GetPosition()[0];
-    y0  = aStep->GetPreStepPoint()->GetPosition()[1];
-    z0  = aStep->GetPreStepPoint()->GetPosition()[2];
-    
-    px0 = aStep->GetPreStepPoint()->GetMomentumDirection()[0];
-    py0 = aStep->GetPreStepPoint()->GetMomentumDirection()[1];
-    pz0 = aStep->GetPreStepPoint()->GetMomentumDirection()[2];
-    Einit = aStep->GetPreStepPoint()->GetKineticEnergy();
-    G4double Range1 = emCal.GetRangeFromRestricteDEDX(Einit, particle, water);
-    G4cout << "Range at Einit: " << Range1 << endl;
+    x0  = aStep->GetPostStepPoint()->GetPosition()[0];
+    y0  = aStep->GetPostStepPoint()->GetPosition()[1];
+    z0  = aStep->GetPostStepPoint()->GetPosition()[2];
+    px0 = aStep->GetPostStepPoint()->GetMomentumDirection()[0];
+    py0 = aStep->GetPostStepPoint()->GetMomentumDirection()[1];
+    pz0 = aStep->GetPostStepPoint()->GetMomentumDirection()[2];
+    Einit = aStep->GetPostStepPoint()->GetKineticEnergy();
+
     theSteppingAction->temp_X.clear();
     theSteppingAction->temp_Y.clear();
     theSteppingAction->temp_Z.clear();
     theSteppingAction->Eloss.clear();
     theSteppingAction->Length.clear();
     theSteppingAction->temp_name.clear();
-
     hitFirstDetector= true;
 
   }
   
   else if(theName=="sd2"){
     if(hitFirstDetector){      
-      x1  = aStep->GetPostStepPoint()->GetPosition()[0];
-      y1  = aStep->GetPostStepPoint()->GetPosition()[1];
-      z1  = aStep->GetPostStepPoint()->GetPosition()[2];
+      x1  = aStep->GetPreStepPoint()->GetPosition()[0];
+      y1  = aStep->GetPreStepPoint()->GetPosition()[1];
+      z1  = aStep->GetPreStepPoint()->GetPosition()[2];
       
-      px1 = aStep->GetPostStepPoint()->GetMomentumDirection()[0];
-      py1 = aStep->GetPostStepPoint()->GetMomentumDirection()[1];
-      pz1 = aStep->GetPostStepPoint()->GetMomentumDirection()[2];
+      px1 = aStep->GetPreStepPoint()->GetMomentumDirection()[0];
+      py1 = aStep->GetPreStepPoint()->GetMomentumDirection()[1];
+      pz1 = aStep->GetPreStepPoint()->GetMomentumDirection()[2];
   
       Id    = aStep->GetTrack()->GetTrackID();
-      Estop = aStep->GetPostStepPoint()->GetKineticEnergy();
-      G4double Range2 = emCal.GetRangeFromRestricteDEDX(Estop, particle, water);
-      G4cout << "Range at Estop: " << Range2 << endl;
+      Estop = aStep->GetPreStepPoint()->GetKineticEnergy();
+
+      Range1 = emCal.GetRange(Einit, particle, water);
+      Range2 = emCal.GetRange(Estop, particle, water);
+      G4cout << "Range/Energy at Einit: " << Range1 << " " << Einit << endl;
+      G4cout << "Range/Energy at Estop: " << Range2 << " " << Estop << endl;
+      cout<<"WET : "<<Range1 - Range2<<endl;
+
       Eloss    = &(theSteppingAction->Eloss);
       tracks_X = &(theSteppingAction->temp_X);
       tracks_Y = &(theSteppingAction->temp_Y);
@@ -117,8 +119,8 @@ void Analysis::analyseHit(G4Step* aStep, G4String theName)
       mat_name->push_back( aStep->GetTrack()->GetMaterial()->GetName().data() );
       Eloss->push_back( aStep->GetTotalEnergyDeposit()-aStep->GetNonIonizingEnergyDeposit());
       hitSecondDetector = true;
-    }
 
+    }
     if(hitFirstDetector && hitSecondDetector){
       t->Fill();
       hitFirstDetector  = false;
@@ -129,18 +131,14 @@ void Analysis::analyseHit(G4Step* aStep, G4String theName)
     theSteppingAction->temp_Y.clear();
     theSteppingAction->temp_Z.clear();
     theSteppingAction->Eloss.clear();
-    theSteppingAction->Length.clear();
     theSteppingAction->temp_name.clear();
     hitFirstDetector=false;
   }
 
-
 }
-
 
 void Analysis::Save(){
   f1->cd();
-  theGenerator = PrimaryGeneratorAction::GetInstance();
   t->Write("",TObject::kOverwrite);
   f1->Close();
 }

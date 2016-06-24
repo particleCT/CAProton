@@ -22,7 +22,6 @@ public :
     return theMaterial; }
 
   G4Material* mat;
-  G4Material* water;
   G4Element* elH, *elC, *elN, *elO, *elF, *elNa, *elMg, *elSi, *elP, *elS, *elCl, *elAr, *elK, *elCa, *elFe, *elZn, *elBa;
   std::map<G4String,G4Material*> theMaterialList;
 

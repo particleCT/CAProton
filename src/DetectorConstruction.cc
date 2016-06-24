@@ -111,7 +111,6 @@ DetectorConstruction::DetectorConstruction(G4String theName, G4double angle):the
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {  
   G4cout << "DetectorConstruction::Construct" << G4endl;
-  water = theOrganicMaterial->water;
   air   = theOrganicMaterial->ConstructMaterial("Air",0.0001025);
   //Cubic Water world
   G4double world_size          = 3*m;  
