@@ -33,8 +33,6 @@ public:
 private:
 
   static Analysis* theAnalysis;
-  G4bool hitFirstDetector  = false ;
-  G4bool hitSecondDetector = false ;
   PrimaryGeneratorAction *theGenerator;
   DetectorConstruction   *theDetector ;
   SteppingAction         *theSteppingAction;

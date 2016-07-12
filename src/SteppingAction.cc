@@ -36,8 +36,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   }
   if(tr->GetTrackID()==1){
   G4ThreeVector preStepPos = aStep->GetPreStepPoint()->GetPosition();
-  G4double en  = aStep->GetTotalEnergyDeposit()-aStep->GetNonIonizingEnergyDeposit();
-  Eloss.push_back(en);
   temp_X.push_back(preStepPos.x());
   temp_Y.push_back(preStepPos.y());
   temp_Z.push_back(preStepPos.z());

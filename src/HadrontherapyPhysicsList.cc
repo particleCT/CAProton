@@ -64,9 +64,9 @@ HadrontherapyPhysicsList::HadrontherapyPhysicsList(G4String& parWorldName):G4VMo
   // Deacy physics and all particles
   decPhysicsList = new G4DecayPhysics();
   AddPhysicsList("emphysics_pct");
-  //AddPhysicsList("elastic");
-  //AddPhysicsList("binary");
-  //AddPhysicsList("qmd_ion_ion_inelastic");
+  AddPhysicsList("elastic");
+  AddPhysicsList("binary");
+  AddPhysicsList("qmd_ion_ion_inelastic");
 
 }
 
@@ -145,13 +145,13 @@ void HadrontherapyPhysicsList::AddParallelWorldProcess() {
     if ( !particle->IsShortLived() ) {
       G4ProcessManager* pmanager = particle->GetProcessManager();
       pmanager->AddProcess(theParallelWorldProcess);
-      pmanager->AddProcess(theParallelWorldScoringProcess);
+      //pmanager->AddProcess(theParallelWorldScoringProcess);
       if ( theParallelWorldProcess->IsAtRestRequired(particle) ) { pmanager->SetProcessOrdering(theParallelWorldProcess,idxAtRest,9999); }
       pmanager->SetProcessOrdering(theParallelWorldProcess,idxAlongStep,1);
       pmanager->SetProcessOrdering(theParallelWorldProcess,idxPostStep,9999);
-      pmanager->SetProcessOrderingToLast(theParallelWorldScoringProcess, idxAtRest);
-      pmanager->SetProcessOrdering(theParallelWorldScoringProcess, idxAlongStep, 1);
-      pmanager->SetProcessOrderingToLast(theParallelWorldScoringProcess, idxPostStep);
+      //pmanager->SetProcessOrderingToLast(theParallelWorldScoringProcess, idxAtRest);
+      //pmanager->SetProcessOrdering(theParallelWorldScoringProcess, idxAlongStep, 1);
+      //pmanager->SetProcessOrderingToLast(theParallelWorldScoringProcess, idxPostStep);
 
     }
   }

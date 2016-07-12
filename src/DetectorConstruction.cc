@@ -112,6 +112,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 {  
   G4cout << "DetectorConstruction::Construct" << G4endl;
   air   = theOrganicMaterial->ConstructMaterial("Air",0.0001025);
+  water = theOrganicMaterial->ConstructMaterial("Water",1.0);
   //Cubic Water world
   G4double world_size          = 3*m;  
 

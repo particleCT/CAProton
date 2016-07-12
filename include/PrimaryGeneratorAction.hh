@@ -35,7 +35,7 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
   G4int nProtonsGenerated;   
   G4double IrradiatedEnergy; 
   G4ParticleDefinition* particle;
-
+  
   vector<G4double> beamPosZ;
   vector<G4double> beamPosY;
   private:

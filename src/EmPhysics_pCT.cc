@@ -250,10 +250,10 @@ void EmPhysics_pCT::ConstructProcess()
       G4hMultipleScattering* msc = new G4hMultipleScattering();
       G4ionIonisation* ionIoni = new G4ionIonisation();
       ionIoni->SetStepFunction(0.1, 10*um);
-      //ph->RegisterProcess(msc, particle);
+      ph->RegisterProcess(msc, particle);
       ph->RegisterProcess(ionIoni, particle);
-      //ph->RegisterProcess(ionnuc, particle);
-
+      ph->RegisterProcess(ionnuc, particle);
+      
     } else if (particleName == "GenericIon") {
 
       G4ionIonisation* ionIoni = new G4ionIonisation();
@@ -261,9 +261,9 @@ void EmPhysics_pCT::ConstructProcess()
       G4hMultipleScattering* msc = new G4hMultipleScattering();
       //ionIoni->SetStepFunction(0.1, 1*um);
 
-      //ph->RegisterProcess(msc, particle);
+      ph->RegisterProcess(msc, particle);
       ph->RegisterProcess(ionIoni, particle);
-      //ph->RegisterProcess(ionnuc, particle);
+      ph->RegisterProcess(ionnuc, particle);
 
     } /*else if (particleName == "pi+" ||
                particleName == "pi-" ) {
@@ -296,11 +296,11 @@ void EmPhysics_pCT::ConstructProcess()
       G4hIonisation* hIoni = new G4hIonisation();
       hIoni->SetStepFunction(0.2, 50*um);
 
-     //ph->RegisterProcess(pmsc, particle);
+      ph->RegisterProcess(pmsc, particle);
       ph->RegisterProcess(hIoni, particle);
       /*ph->RegisterProcess(pb, particle);
       ph->RegisterProcess(pp, particle);*/
-      //ph->RegisterProcess(pnuc, particle);
+      ph->RegisterProcess(pnuc, particle);
 
     } /*else if (particleName == "B+" ||
 	       particleName == "B-" ||

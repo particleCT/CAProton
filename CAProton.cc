@@ -96,14 +96,11 @@ void calcRSP(DetectorConstruction* myDC, PrimaryGeneratorAction* theGenerator){
     G4int HU = myDC->huList[i];
     G4int I = 0;
     G4double tot =0;
-    G4Material* water = myDC->theMaterialList.at(0);
-    cout<<water->GetName()<<endl;
+    G4Material* water = myDC->water;
     for(int j=10;j<19000;j++){
       G4double dedx_w = emCal->ComputeElectronicDEDX( double(j)/10*MeV,particle,water);
       G4double dedx_b = emCal->ComputeElectronicDEDX( double(j)/10*MeV,particle,myDC->theMaterialList.at(i));
       tot +=dedx_b/dedx_w;
-      
-      cout<<double(j)/10*MeV<<" "<<dedx_w<<endl;
       I+=1;
     }
     G4double RSP = tot/I;

@@ -48,10 +48,9 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-  particle = G4IonTable::GetIonTable()->GetIon(2,4,0);
+  particle = G4IonTable::GetIonTable()->GetIon(1,1,0);
   particleGun->SetParticleDefinition(particle);
   Einit = ENER*MeV;
-  
   /*G4double cosTheta = (1./5.)*(G4UniformRand()-0.5);
   phi = (1./16.)*(pi*G4UniformRand()-pi/2);
   G4double sinTheta = std::sqrt(1. - cosTheta*cosTheta);*/
@@ -59,7 +58,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   py0 = 0;//sinTheta*std::sin(phi);
   pz0 = 0;//cosTheta;
 
-  x0 = theDetector->Xmin - 0.5*mm;
+  x0 = theDetector->Xmin;
   y0 = G4UniformRand()*fieldSizeY-fieldSizeY/2 + theDetector->shift.y();     
   z0 = G4UniformRand()*fieldSizeZ-fieldSizeZ/2 + theDetector->shift.z();
 
@@ -72,7 +71,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   particleGun->GeneratePrimaryVertex(anEvent);
   IrradiatedEnergy += Einit;
   nProtonsGenerated++;
-  if(nProtonsGenerated%5000==0) cout << nProtonsGenerated << endl;
+  if(nProtonsGenerated%20000==0) cout << nProtonsGenerated << endl;
 }
 
 vector<G4double> PrimaryGeneratorAction::linspace(double a, double b, double step) {
